@@ -1,26 +1,22 @@
-#  
-#  
-#  flake.nix
-#   └─ ./hosts
-#       ├─ default.nix
-#       └─ configuration.nix  *
-#
+# Edit this configuration file to define what should be installed on
+# your system.  Help is available in the configuration.nix(5) man page
+# and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, user, home-manager, ... }:
 
 {
   #imports = [];
 
+  # Use the systemd-boot EFI boot loader.
+  #boot.loader.systemd-boot.enable = true;
+  #boot.loader.efi.canTouchEfiVariables = true;
+
   networking.hostName = "Tera"; # Define your hostname.
+  # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
-  # Enable networking
-  networking.networkmanager.enable = true;
-
-  # Set your time zone.
   time.timeZone = "Europe/Stockholm";
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.utf8";
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "sv_SE.utf8";
@@ -33,39 +29,25 @@
     LC_TELEPHONE = "sv_SE.utf8";
     LC_TIME = "sv_SE.utf8";
   };
-
+  console.keyMap = "sv-latin1";
+  
   services = {
     xserver = {
-      libinput = {
-        enable = true;
-      };
-
+      libinput.enable = true;
       layout = "se";
-#      xlnVariant = "";
     };
-    
-    #openssh = {
-    #  enable = true;
-    #  allowSFTP = true;
-    #};
-
-    flatpak.enable = true;
-
-    emacs.enable = true;
-    blueman.enable = true;
 
     pipewire = {
       enable = true;
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
-      # If you want to use JACK applications, uncomment this
-      #jack.enable = true;
-
-      # use the example session manager (no others are packaged yet so this is enabled by default,
-      # no need to redefine it in your config for now)
-      #media-session.enable = true;
     };
+
+    flatpak.enable = true;
+
+    emacs.enable = true;
+    blueman.enable = true;
   };
 
   xdg.portal = {
@@ -77,17 +59,14 @@
     source-code-pro
     font-awesome
     corefonts
+    noto-fonts-emoji
     (nerdfonts.override {
       fonts = [
         "FiraCode"
       ];
     })
   ];
- 
-  # Configure console keymap
-  console.keyMap = "sv-latin1";
 
-  # Enable sound with pipewire.
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -95,76 +74,55 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user} = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" "audio" "video" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "video" "docker" ];
     shell = pkgs.zsh;
+    password = "password";
   };
+
 
   environment = {
     variables = {
       EDITOR = "nvim";
-      TERMINAL = "terminator";
       VISUAL = "nvim";
+      TERMINAL = "terminator";
     };
-    
+
     systemPackages = with pkgs; [
       vim
       wget
       docker
       docker-compose
-      git
       killall
+      btop
       xterm
       calc
-      flameshot
       jdk8
       imwheel
       nodejs
       nodePackages.npm
       yarn
-#     noto-fonts
-      noto-fonts-emoji
       gnome.gnome-disk-utility
       bluez
       blueman
       xclip
       bat
-#     fira-code
       aspell
       aspellDicts.en
       aspellDicts.sv
       mono
       yt-dlp
-#     zsh
+      nitrogen
+      picom
     ];
   };
-
-  programs.zsh = {
-    ohMyZsh = {
-      enable = true;
-      plugins = [ "git" "thefuck" ];
-      theme = "bira";
-    };
-
-    shellAliases = {
-      ls = "ls --color=auto";
-      ll = "ls -lav --ignore=..";
-      l = "ls -lav --ignore=.?*";
-      la = "ls -A";
-      
-#     .. = "cd ..";
-      
-      mv = "mv -i";
-      rm = "rm -i";
-      
-      nv = "nvim";
-    };
-  };
+  nixpkgs.config.allowUnfree = true;
 
   nix = {
     package = pkgs.nixFlakes;
     extraOptions = "experimental-features = nix-command flakes";
 
     settings.auto-optimise-store = true;
+
     gc = {
       automatic = true;
       dates = "weekly";
@@ -173,10 +131,11 @@
   };
 
   system = {
-    autoUpgrade = {
-      enable = true;
-      channel = "https://nixos.org/channels/nixos-22.05";
-    };
-    stateVersion = "22.05";
+      autoUpgrade = {
+        enable = true;
+        channel = "https://nixos.org/channels/nixos-22.05";
+      };
+      stateVersion = "22.05";
   };
 }
+

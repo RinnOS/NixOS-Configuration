@@ -1,11 +1,4 @@
-#  
-#  
-#  flake.nix
-#   └─ ./hosts
-#       ├─ default.nix  *
-#       └─ ./Tera
-#
-
+ 
 { lib, inputs, system, home-manager, user, ... }:
 
 {

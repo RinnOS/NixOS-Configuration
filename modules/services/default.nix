@@ -1,4 +1,4 @@
-[
-    ./flameshot.nix
-    ./picom.nix
-]
+ [
+   ./flameshot.nix
+   ./picom.nix
+ ]
