@@ -76,7 +76,7 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "audio" "video" "docker" ];
     shell = pkgs.zsh;
-    password = "password";
+    password = "password"; # Obviously change password once you're done with the installation.
   };
 
 
