@@ -41,6 +41,7 @@
       vscode
       emacs
       libreoffice
+      appimage-run
 
       # File Management
       unzip

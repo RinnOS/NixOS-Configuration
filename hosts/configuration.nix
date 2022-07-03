@@ -7,13 +7,7 @@
 {
   #imports = [];
 
-  # Use the systemd-boot EFI boot loader.
-  #boot.loader.systemd-boot.enable = true;
-  #boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "Tera"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.hostName = "RinnOS";
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   time.timeZone = "Europe/Stockholm";
@@ -95,6 +89,7 @@
       killall
       btop
       xterm
+      xdotool
       calc
       jdk8
       imwheel
@@ -113,6 +108,12 @@
       yt-dlp
       nitrogen
       picom
+      proton-caller
+      protontricks
+      protonup
+      vulkan-loader
+      vulkan-validation-layers
+      vulkan-tools
     ];
   };
   nixpkgs.config.allowUnfree = true;
